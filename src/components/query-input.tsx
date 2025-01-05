@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 
 const SAMPLE_REPOS = [
+    { name: "GitSift", url: "https://github.com/drxc00/gitsift" },
     { name: "React", url: "https://github.com/facebook/react" },
     { name: "VS Code", url: "https://github.com/microsoft/vscode" },
     { name: "Angular", url: "https://github.com/angular/angular" },
