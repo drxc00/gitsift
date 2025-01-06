@@ -8,7 +8,6 @@ GitSift is a GitHub repository evaluation tool that helps developers identify wh
 - **Community Metrics**: Track issues, PRs, contributors, and response times
 - **File Analysis**: Identify missing or critical files in your repository
 - **Insights & Recommendations**: Get actionable insights to improve your repository
-- **Dark Mode Support**: Beautiful dark and light themes
 
 ## Getting Started
 
@@ -33,8 +32,6 @@ npm install
 3. Set up environment variables:
 Create a `.env.local` file with the following content:
 ```env
-UPSTASH_REDIS_REST_URL=your_upstash_url
-UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 GITHUB_TOKEN=your_github_token # You can get one from https://github.com/settings/tokens, this prevents rate limiting
 ```
 
@@ -55,7 +52,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 - **State Management**: React Query
 - **UI Components**: shadcn/ui, Radix UI
 - **Icons**: Lucide React
-- **Caching**: Upstash Redis
 - **Styling**: Tailwind CSS with custom animations
 
 ## Contributing
