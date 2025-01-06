@@ -6,6 +6,8 @@ import { CommunityCard } from "@/components/community/community-card";
 import { InsightsCard } from "@/components/insights-card";
 import { SiftedData, RepositoryData, RepoCommunityHealth, RepoStandard, RepoFiles } from "@/app/types";
 import { unstable_cache as cache } from "next/cache"; // NOTE: This may be "unstable"
+import { TriangleAlert } from "lucide-react";
+import { ErrorDisplay } from "@/components/error";
 
 const getRepoData = cache(async (gitUser: string, gitRepo: string) => {
     try {
@@ -29,17 +31,10 @@ export default async function RepoPage({ params }: { params: Promise<{ gitUser: 
     const { gitUser, gitRepo } = await params;
     // Call server action
     const repoDataQuery: SiftedData = await getRepoData(gitUser, gitRepo) as SiftedData;
-    
+
     // If the repo data query is an error, return an error message
     if (repoDataQuery.status === "error") {
-        return (
-            <div className="flex flex-col justify-center items-center gap-6 max-w-screen-xl mx-auto mt-10 mb-10">
-                <div className="flex flex-col gap-2">
-                    <p className="text-center text-2xl font-semibold">Error: No data found</p>
-                    <p className="text-center text-lg">{repoDataQuery.error}</p>
-                </div>
-            </div>
-        );
+        return <ErrorDisplay message={repoDataQuery.error as string} header="An Error Occurred" />
     }
 
     return (
