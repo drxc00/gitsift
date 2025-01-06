@@ -48,26 +48,18 @@ query($owner: String!, $name: String!, $count: Int!) {
         updatedAt
         mergedAt
         state
-        comments {
-          totalCount
-        }
       }
     }
     isFork
     forks(first: $count) {
       totalCount
     }
-    object(expression: "main") {
+    commits: object(expression: "main") {
       ... on Commit {
-        history(first: $count) {
+        history(first: 10) {
           edges {
             node {
-              message
               committedDate
-              author {
-                name
-                email
-              }
             }
           }
         }
@@ -79,7 +71,7 @@ query($owner: String!, $name: String!, $count: Int!) {
       url
     }
     issueTemplates {
-      body
+      filename
     }
     repositoryTopics(first: 100) {
       nodes {
@@ -89,18 +81,11 @@ query($owner: String!, $name: String!, $count: Int!) {
       }
     }
     licenseInfo {
-      body
       description
     }
     securityPolicyUrl
     hasVulnerabilityAlertsEnabled
-    vulnerabilityAlerts (first: 100) {
-      nodes {
-        createdAt
-        state
-      }
-    }
-    branchProtectionRules(first: 100) {
+    branchProtectionRules(first: $count) {
       nodes {
         pattern
         id
@@ -108,10 +93,6 @@ query($owner: String!, $name: String!, $count: Int!) {
     }
     contributingGuidelines {
       body
-    }
-    latestRelease {
-      createdAt
-      isPrerelease
     }
     contributors: mentionableUsers {
       totalCount

@@ -41,6 +41,7 @@ export type RepoFiles = {
 }
 
 export type RepoActivity = {
+    commitInterval: number;
     totalIssues: number;
     openIssues: number;
     closedIssues: number;
@@ -105,25 +106,17 @@ export type RepositoryData = {
                 updatedAt: string;
                 mergedAt: string | null;
                 state: string;
-                comments: {
-                    totalCount: number;
-                };
             }>;
         };
         isFork: boolean;
         forks: {
             totalCount: number;
         };
-        object: {
+        commits?: {
             history: {
                 edges: Array<{
                     node: {
-                        message: string;
                         committedDate: string;
-                        author: {
-                            name: string;
-                            email: string;
-                        };
                     };
                 }>;
             };
@@ -147,12 +140,6 @@ export type RepositoryData = {
         } | null;
         securityPolicyUrl: string | null;
         hasVulnerabilityAlertsEnabled: boolean;
-        vulnerabilityAlerts: {
-            nodes: Array<{
-                createdAt: string;
-                status: string;
-            }> | null;
-        }
         branchProtectionRules: {
             nodes: Array<{
                 pattern: string;
@@ -162,10 +149,6 @@ export type RepositoryData = {
         contributingGuidelines: {
             body: string;
         } | null;
-        latestRelease: {
-            createdAt: string;
-            isPrerelease: boolean;
-        };
         contributors: {
             totalCount: number;
         };

@@ -1,6 +1,6 @@
 import { RepoActivity } from "@/app/types";
 import { GithubStatsComponent } from "@/components/activity/statistics-component";
-import { CircleAlert, CircleCheck, Clock, GitPullRequest, MessageCircle, Users } from "lucide-react";
+import { CircleAlert, CircleCheck, Clock, GitCommit, GitPullRequest, MessageCircle, Users } from "lucide-react";
 
 // helper function to format time
 const formatTime = (seconds: number): string => {
@@ -66,6 +66,13 @@ export function ActivityCard({ stats }: { stats: RepoActivity }) {
                     icon={<Users className="w-5 h-5 text-white" />}
                     color="bg-indigo-600"
                     message="The percentage of issues that are closed."
+                />
+                <GithubStatsComponent
+                    title="Commit Interval"
+                    value={formatTime(stats.commitInterval)}
+                    icon={<GitCommit className="w-5 h-5 text-white" />}
+                    color="bg-indigo-600"
+                    message="The average time between commits."
                 />
             </div>
         </div>

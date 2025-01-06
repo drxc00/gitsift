@@ -24,7 +24,7 @@ const getRepoData = cache(async (gitUser: string, gitRepo: string) => {
             status: "error",
         } as SiftedData;
     }
-}, ['repoData'], { revalidate: 60 * 60 * 1000 }); // Cache for 1 hour
+}, ['repoData'], { revalidate: 60 * 60 * 1000, tags: ['repoData'] }); // Cache for 1 hour
 
 export default async function RepoPage({ params }: { params: Promise<{ gitUser: string, gitRepo: string }> }) {
     const { gitUser, gitRepo } = await params;

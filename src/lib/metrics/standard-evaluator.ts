@@ -204,7 +204,7 @@ export class StandardEvaluator {
         this.repoStandard.standardSetup.hasTags.present = !!(repo.repositoryTopics && repo.repositoryTopics.nodes.length > 0);
         this.repoStandard.standardSetup.hasBranchProtection.present = !!(repo.branchProtectionRules.nodes && repo.branchProtectionRules.nodes.length > 0);
         this.repoStandard.standardSetup.hasContributionGuidelines.present = !!repo.contributingGuidelines;
-        this.repoStandard.standardSetup.hasVulnerabilityAlerts.present = !!(repo.vulnerabilityAlerts.nodes && repo.vulnerabilityAlerts.nodes.length > 0);
+        this.repoStandard.standardSetup.hasVulnerabilityAlerts.present = !!(repo.hasVulnerabilityAlertsEnabled);
     }
 
     public async getMetrics() {

@@ -15,6 +15,10 @@ export interface OpenIssueNode {
     }
 }
 
+export interface CommitNode {
+    committedDate: string;
+}
+
 export interface ClosedIssueNode {
     title: string;
     createdAt: string;
@@ -60,6 +64,7 @@ export class ActivityEvaluator {
 
         const { issueResponseTimeOpen, issueResponseTimeClosed } = this.calculateAverageResponseTime(openIssues, closedIssues);
         const prMergeTime = this.calculateAverageMergeTime(prs);
+        const commitInterval = this.calculateCommitInterval(repository.commits?.history.edges.map(edge => edge.node) || []);
 
         return {
             totalIssues,
@@ -67,6 +72,7 @@ export class ActivityEvaluator {
             closedIssues: repository.closedIssues.totalCount,
             issueResponseTimeOpen: issueResponseTimeOpen / 1000,
             issueResponseTimeClosed: issueResponseTimeClosed / 1000,
+            commitInterval: commitInterval / 1000,
             prMergeTime: prMergeTime / 1000,
             contributors: contributors.totalCount,
             issueResolutionRate: totalIssues > 0 ? (repository.closedIssues.totalCount / totalIssues) * 100 : 0,
@@ -114,4 +120,23 @@ export class ActivityEvaluator {
 
         return totalMergeTime / mergedPRs.length;
     }
+
+    private calculateCommitInterval(commits: CommitNode[]): number {
+        if (commits.length < 2) return 0; // No interval if there is only one or no commits
+
+        // Sort commits by date (ascending order)
+        const sortedCommits = commits.sort((a, b) => new Date(a.committedDate).getTime() - new Date(b.committedDate).getTime());
+
+        // Calculate total time intervals between consecutive commits
+        const totalInterval = sortedCommits.reduce((sum, commit, index) => {
+            if (index === 0) return sum; // Skip the first commit
+            const currentCommitDate = new Date(commit.committedDate).getTime();
+            const previousCommitDate = new Date(sortedCommits[index - 1].committedDate).getTime();
+            return sum + (currentCommitDate - previousCommitDate);
+        }, 0);
+
+        // Average interval (in milliseconds)
+        return totalInterval / (commits.length - 1);
+    }
+
 }
