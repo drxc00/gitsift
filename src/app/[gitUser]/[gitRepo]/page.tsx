@@ -1,47 +1,30 @@
-"use client";
-
-import { use } from "react";
-import { useQuery } from "react-query";
 import { analyzeRepository } from "@/app/actions";
 import StandardEvaluation from "@/components/standards/standard-evaluation";
 import FileEvaluation from "@/components/files/file-evaluation";
 import { RepositoryInformation } from "@/components/repository-summary";
-import { Loader } from "@/components/loader";
 import { CommunityCard } from "@/components/community/community-card";
 import { InsightsCard } from "@/components/insights-card";
 import { SiftedData, RepositoryData, RepoCommunityHealth, RepoStandard, RepoFiles } from "@/app/types";
+import { unstable_cache as cache } from "next/cache"; // NOTE: This may be "unstable"
+
+const getRepoData = cache(async (gitUser: string, gitRepo: string) => {
+    const repoDataQuery: SiftedData = await analyzeRepository(gitUser, gitRepo) as SiftedData;
+    return repoDataQuery;
+}, ['repoData'], { revalidate: 60 * 60 * 1000 }); // Cache for 1 hour
 
 
-export default function RepoPage({ params }: { params: Promise<{ gitUser: string, gitRepo: string }> }) {
-    const { gitUser, gitRepo } = use(params);
-
-    // Queries
-    const { data: repoDataQuery, isError, isLoading, error } = useQuery(
-        ['repoData', gitUser, gitRepo],
-        async () => {
-            const data = await analyzeRepository(gitUser, gitRepo);
-            // If no data is found, throw an error
-            if (!data) throw new Error("No data found");
-            // Return the sifted data
-            return data as SiftedData;
-        },
-        {
-            staleTime: 1000 * 60 * 60, // Cache for 1 hour
-            retry: false,
-            cacheTime: 1000 * 60 * 60, // Cache for 1 hour
-        }
-    );
-
-
-    if (isError) {
-        return <div>Error: {error as string}</div>;
-    }
-
-    if (isLoading) {
+export default async function RepoPage({ params }: { params: Promise<{ gitUser: string, gitRepo: string }> }) {
+    const { gitUser, gitRepo } = await params;
+    // Call server action
+    const repoDataQuery: SiftedData = await getRepoData(gitUser, gitRepo) as SiftedData;
+    // If no data is found, return an error
+    if (!repoDataQuery) {
         return (
-            <div className="fixed inset-0 flex flex-col items-center justify-center gap-4 z-50 bg-background">
-                <Loader />
-                <p className="text-lg text-muted-foreground">Sifting Repository</p>
+            <div className="flex flex-col justify-center items-center gap-6 max-w-screen-xl mx-auto mt-10 mb-10">
+                <div className="flex flex-col gap-2">
+                    <p className="text-center text-2xl font-semibold">Error: No data found</p>
+                    <p className="text-center text-lg">Repository not found or not public.</p>
+                </div>
             </div>
         );
     }
