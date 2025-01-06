@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { NavBar } from "@/components/nav-bar";
 import { ThemeProvider } from "@/components/themes/theme-provider";
-import { ReactQueryProvider } from "@/components/reactquery-provider";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
@@ -20,7 +19,6 @@ export default function RootLayout({
       <body
         className={` antialiased font-sans`}
       >
-        <ReactQueryProvider>
           <ThemeProvider
             attribute="class"
             enableSystem
@@ -30,7 +28,6 @@ export default function RootLayout({
             {children}
             <Toaster />
           </ThemeProvider>
-        </ReactQueryProvider>
       </body>
     </html>
   );
