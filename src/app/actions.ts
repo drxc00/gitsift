@@ -1,7 +1,7 @@
 "use server";
 import { fetchRepoData } from "@/lib/github";
 import { Evaluator } from "@/lib/metrics/evaluation";
-import { SiftedData, ResponseData } from "./types";
+import { SiftedData, ResponseData, Metrics } from "./types";
 
 export async function analyzeRepository(user: string, repo: string): Promise<SiftedData> {
     try {
@@ -25,7 +25,7 @@ export async function analyzeRepository(user: string, repo: string): Promise<Sif
 
         const siftedData: SiftedData = {
             repo: responseData.repo,
-            metrics: await evaluate.getMetrics(),
+            metrics: await evaluate.getMetrics() as Metrics,
             status: "success",
         };
 

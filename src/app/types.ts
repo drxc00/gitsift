@@ -40,7 +40,7 @@ export type RepoFiles = {
     };
 }
 
-export type RepoCommunityHealth = {
+export type RepoActivity = {
     totalIssues: number;
     openIssues: number;
     closedIssues: number;
@@ -49,14 +49,13 @@ export type RepoCommunityHealth = {
     prMergeTime: number;
     contributors: number;
     issueResolutionRate: number;
-    averagePRComments: number;
     activeContributorsRatio: number;
 }
 
 export type Metrics = {
     repoStandard: RepoStandard;
     repoFiles: RepoFiles;
-    repoCommunityHealth: RepoCommunityHealth;
+    repoActivity: RepoActivity;
 }
 
 export type RepositoryData = {

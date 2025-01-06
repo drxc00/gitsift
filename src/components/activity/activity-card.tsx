@@ -1,5 +1,5 @@
-import { RepoCommunityHealth } from "@/app/types";
-import { GithubStatsComponent } from "@/components/community/statistics-component";
+import { RepoActivity } from "@/app/types";
+import { GithubStatsComponent } from "@/components/activity/statistics-component";
 import { CircleAlert, CircleCheck, Clock, GitPullRequest, MessageCircle, Users } from "lucide-react";
 
 // helper function to format time
@@ -18,7 +18,7 @@ const formatTime = (seconds: number): string => {
 };
 
 
-export function CommunityCard({ stats }: { stats: RepoCommunityHealth }) {
+export function ActivityCard({ stats }: { stats: RepoActivity }) {
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -66,13 +66,6 @@ export function CommunityCard({ stats }: { stats: RepoCommunityHealth }) {
                     icon={<Users className="w-5 h-5 text-white" />}
                     color="bg-indigo-600"
                     message="The percentage of issues that are closed."
-                />
-                <GithubStatsComponent
-                    title="Average PR Comments"
-                    value={stats.averagePRComments.toFixed(2) + " comments"}
-                    icon={<MessageCircle className="w-5 h-5 text-white" />}
-                    color="bg-blue-600"
-                    message="The average number of comments per pull request. (most recent ~10 pull requests)"
                 />
             </div>
         </div>

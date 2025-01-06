@@ -1,17 +1,4 @@
-import { ResponseData, RepoCommunityHealth } from "@/app/types";
-
-export interface CommunityHealthMetrics {
-    totalIssues: number;
-    openIssues: number;
-    closedIssues: number;
-    issueResponseTimeOpen: number;
-    issueResponseTimeClosed: number;
-    prMergeTime: number;
-    contributors: number;
-    issueResolutionRate: number;
-    averagePRComments: number;
-    activeContributorsRatio: number;
-}
+import { ResponseData, RepoActivity } from "@/app/types";
 
 export interface OpenIssueNode {
     title: string;
@@ -19,11 +6,6 @@ export interface OpenIssueNode {
     updatedAt: string;
     comments: {
         totalCount: number;
-    };
-    labels: {
-        nodes: Array<{
-            name: string;
-        }>;
     };
     assignees: {
         nodes: Array<unknown>; // Adjust if assignee structure is known
@@ -61,14 +43,14 @@ export interface DiscussionNode {
     };
 }
 
-export class CommunityHealthEvaluator {
+export class ActivityEvaluator {
     private repoData: ResponseData;
 
     constructor(repoData: ResponseData) {
         this.repoData = repoData;
     }
 
-    public async getMetrics(): Promise<CommunityHealthMetrics> {
+    public async getMetrics(): Promise<RepoActivity> {
         const repository = this.repoData.repo.repository;
         const openIssues = repository.openIssues.nodes as OpenIssueNode[];
         const closedIssues = repository.closedIssues.nodes as ClosedIssueNode[];
@@ -88,9 +70,8 @@ export class CommunityHealthEvaluator {
             prMergeTime: prMergeTime / 1000,
             contributors: contributors.totalCount,
             issueResolutionRate: totalIssues > 0 ? (repository.closedIssues.totalCount / totalIssues) * 100 : 0,
-            averagePRComments: this.calculateAveragePRComments(prs),
             activeContributorsRatio: totalIssues > 0 ? contributors.totalCount / totalIssues : 0,
-        } as RepoCommunityHealth;
+        } as RepoActivity;
     }
 
     private calculateAverageResponseTime(openIssues: OpenIssueNode[], closedIssues: ClosedIssueNode[]): { issueResponseTimeOpen: number, issueResponseTimeClosed: number } {
@@ -132,11 +113,5 @@ export class CommunityHealthEvaluator {
         }, 0);
 
         return totalMergeTime / mergedPRs.length;
-    }
-
-    private calculateAveragePRComments(prs: PullRequestNode[]): number {
-        if (prs.length === 0) return 0;
-        const totalComments = prs.reduce((sum, pr) => sum + pr.comments.totalCount, 0);
-        return totalComments / prs.length;
     }
 }

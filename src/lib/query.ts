@@ -56,19 +56,6 @@ query($owner: String!, $name: String!, $count: Int!) {
     isFork
     forks(first: $count) {
       totalCount
-      nodes {
-        name
-        description
-        url
-        createdAt
-        updatedAt
-        pushedAt
-        stargazerCount
-        forkCount
-        watchers {
-          totalCount
-        }
-      }
     }
     object(expression: "main") {
       ... on Commit {

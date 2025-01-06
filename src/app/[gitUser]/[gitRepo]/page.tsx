@@ -2,11 +2,10 @@ import { analyzeRepository } from "@/app/actions";
 import StandardEvaluation from "@/components/standards/standard-evaluation";
 import FileEvaluation from "@/components/files/file-evaluation";
 import { RepositoryInformation } from "@/components/repository-summary";
-import { CommunityCard } from "@/components/community/community-card";
+import { ActivityCard } from "@/components/activity/activity-card";
 import { InsightsCard } from "@/components/insights-card";
-import { SiftedData, RepositoryData, RepoCommunityHealth, RepoStandard, RepoFiles } from "@/app/types";
-import { unstable_cache as cache } from "next/cache"; // NOTE: This may be "unstable"
-import { TriangleAlert } from "lucide-react";
+import { SiftedData, RepositoryData, RepoActivity, RepoStandard, RepoFiles } from "@/app/types";
+import { unstable_cache as cache } from "next/cache";
 import { ErrorDisplay } from "@/components/error";
 
 const getRepoData = cache(async (gitUser: string, gitRepo: string) => {
@@ -43,7 +42,7 @@ export default async function RepoPage({ params }: { params: Promise<{ gitUser: 
                 <RepositoryInformation data={repoDataQuery?.repo as RepositoryData} />
             </div>
             <div>
-                <CommunityCard stats={repoDataQuery?.metrics.repoCommunityHealth as RepoCommunityHealth} />
+                <ActivityCard stats={repoDataQuery?.metrics.repoActivity as RepoActivity} />
             </div>
             <div>
                 <StandardEvaluation repoStandard={repoDataQuery?.metrics.repoStandard as RepoStandard} />
