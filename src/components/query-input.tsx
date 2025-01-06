@@ -23,7 +23,7 @@ const SAMPLE_REPOS = [
 
 export function QueryInput() {
 
-    const [query, setQuery] = useState("");
+    const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -32,7 +32,7 @@ export function QueryInput() {
         // Regex to match GitHub repository URLs
         const githubRepoRegex = /^(https:\/\/)?github\.com\/([^\/]+)\/([^\/]+)\/?$/;
         // Test the query against the regex
-        const match = query.match(githubRepoRegex);
+        const match = url.match(githubRepoRegex);
 
         if (!match) {
             toast({
@@ -52,19 +52,37 @@ export function QueryInput() {
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            <div className="w-full max-w-xl flex gap-2 items-center mt-6">
-                <Input placeholder="https://github.com/..." className="h-10" value={query} onChange={(e) => setQuery(e.target.value)} />
-                <Button onClick={onClick} className="h-10" disabled={loading}>
-                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FolderSearch />}
-                </Button>
+        <div className="flex flex-col gap-4 mt-10">
+            <div className="flex flex-col gap-4 items-center max-w-2xl mx-auto w-full">
+                <div className="flex w-full gap-2">
+                    <Input
+                        type="url"
+                        placeholder="https://github.com/..."
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        className="h-12"
+                        height={48}
+                    />
+                    <Button className="px-8 h-12" onClick={onClick}>
+                        <span>
+                            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                                <div className="flex items-center justify-center gap-2">
+                                    <FolderSearch />
+                                    <span>Sift</span>
+                                </div>
+                            )}
+                        </span>
+                    </Button>
+                </div>
             </div>
             <div className="text-center">
-                <p className="text-primary">Try out some examples</p>
+                <p className="text-sm text-muted-foreground">
+                    Try out some examples
+                </p>
             </div>
             <div className="flex gap-2 flex-wrap justify-center text-primary max-w-xl">
                 {SAMPLE_REPOS.map((repo) => (
-                    <Button key={repo.name} onClick={() => setQuery(repo.url)} variant="outline" size="sm">
+                    <Button key={repo.name} onClick={() => setUrl(repo.url)} variant="secondary" size="sm">
                         {repo.name}
                     </Button>
                 ))}

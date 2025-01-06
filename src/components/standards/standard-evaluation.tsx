@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CircularProgress } from "@/components/standards/circular-progress";
 import { StatusItem } from "@/components/status-item";
 import { RepoStandard } from "@/app/types";
+import { FileChartColumnIncreasing } from "lucide-react";
 
 export default function StandardEvaluation({ repoStandard }: { repoStandard: RepoStandard }) {
     const { standardScore, standardFiles, standardSetup, details } = repoStandard
@@ -11,12 +12,12 @@ export default function StandardEvaluation({ repoStandard }: { repoStandard: Rep
     return (
         <div className="">
             <Card className="shadow-none rounded-md">
-                <CardHeader className="bg-muted p-4 border-b border-border">
-                    <CardTitle className="text-lg">Repository Evaluation</CardTitle>
+                <CardHeader>
+                    <CardTitle className="text-2xl font-semibold">Repository Evaluation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6 mt-4">
-                        <div className="flex gap-10 items-center justify-center border rounded-md p-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="flex gap-10 items-center justify-center px-10">
                             <div className="flex flex-col items-center justify-center space-y-4">
                                 <CircularProgress value={standardScore} label="Overall Score" />
                                 <div className="text-center">
@@ -24,8 +25,11 @@ export default function StandardEvaluation({ repoStandard }: { repoStandard: Rep
                                     <p className="text-sm text-muted-foreground">Setup Score: {Math.round(details.setupScore)}%</p>
                                 </div>
                             </div>
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold">Quick Overview</h3>
+                            <div className="space-y-4 w-full">
+                                <div className="flex items-center gap-2">
+                                    <FileChartColumnIncreasing  className="h-5 w-5" />
+                                    <h3 className="text-lg font-semibold">Quick Overview</h3>
+                                </div>
                                 <div className="space-y-2">
                                     <StatusItem label="License" present={standardFiles["LICENSE"]} />
                                     <StatusItem label="README" present={standardFiles["README.md"]} />
@@ -34,10 +38,10 @@ export default function StandardEvaluation({ repoStandard }: { repoStandard: Rep
                                 </div>
                             </div>
                         </div>
-                        <Tabs defaultValue="files">
+                        <Tabs defaultValue="files" className="w-full">
                             <TabsList className="grid w-full grid-cols-2">
-                                <TabsTrigger value="files">Standard Files</TabsTrigger>
-                                <TabsTrigger value="setup">Repository Setup</TabsTrigger>
+                                <TabsTrigger value="files" className="rounded-md">Standard Files</TabsTrigger>
+                                <TabsTrigger value="setup" className="rounded-md">Repository Setup</TabsTrigger>
                             </TabsList>
                             <div className="mt-4 border rounded-md">
                                 <TabsContent value="files" className="m-0">

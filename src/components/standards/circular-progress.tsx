@@ -5,7 +5,7 @@ interface CircularProgressProps {
     label?: string;
 }
 
-export function CircularProgress({ value, size = 160, strokeWidth = 12, label }: CircularProgressProps) {
+export function CircularProgress({ value, size = 180, strokeWidth = 14, label }: CircularProgressProps) {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (value / 100) * circumference;

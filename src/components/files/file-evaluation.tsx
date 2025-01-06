@@ -28,11 +28,11 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
     return (
         <div className="">
             <Card className="shadow-none rounded-md">
-                <CardHeader className="bg-muted p-4 border-b border-border">
-                    <CardTitle className="text-lg">File Evaluation</CardTitle>
+                <CardHeader>
+                    <CardTitle className="text-2xl font-semibold">File Evaluation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full items-start mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full items-start">
                         {/* Left Section */}
                         <div className="flex flex-col h-full justify-between">
                             <div className="flex items-center justify-between">
@@ -70,47 +70,23 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                         </div>
 
                         {/* Right Section */}
-                        <div className="space-y-4">
-                            <Tabs defaultValue="all">
-                                <TabsList className="grid grid-cols-2">
-                                    <TabsTrigger value="all">All Files</TabsTrigger>
-                                    <TabsTrigger value="categories">Categories</TabsTrigger>
-                                </TabsList>
-                                <div className="mt-4 border rounded-md">
-                                    <TabsContent value="all" className="m-0">
-                                        <ScrollArea className="h-[200px] p-4">
-                                            <div className="grid gap-2">
-                                                {Object.entries(forbiddenFiles).map(([file]) => {
-                                                    const isCritical = details.criticalFiles.includes(file);
-                                                    return (
-                                                        <StatusItem key={file} label={file} present={!isCritical} />
-                                                    );
-                                                })}
-                                            </div>
-                                        </ScrollArea>
-                                    </TabsContent>
-                                    <TabsContent value="categories" className="m-0">
-                                        <ScrollArea className="h-[200px] p-4">
-                                            <div className="space-y-4">
-                                                {Object.entries(fileCategories).map(([category, files]) => (
-                                                    <div key={category}>
-                                                        <h4 className="font-semibold mb-2">{category}</h4>
-                                                        <div className="grid gap-2">
-                                                            {files.map((file) => {
-                                                                const isCritical = details.criticalFiles.includes(file);
-                                                                return (
-                                                                    <StatusItem key={file} label={file} present={!isCritical} />
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </ScrollArea>
-                                    </TabsContent>
-                                </div>
-                            </Tabs>
-                        </div>
+                        <ScrollArea className="h-fit max-h-60 p-4 border rounded-md flex flex-col">
+                            <div className="space-y-4">
+                                {Object.entries(fileCategories).map(([category, files]) => (
+                                    <div key={category}>
+                                        <h4 className="font-semibold mb-2">{category}</h4>
+                                        <div className="grid gap-2">
+                                            {files.map((file) => {
+                                                const isCritical = details.criticalFiles.includes(file);
+                                                return (
+                                                    <StatusItem key={file} label={file} present={!isCritical} />
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </ScrollArea>
                     </div>
                 </CardContent>
             </Card>

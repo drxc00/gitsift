@@ -1,6 +1,6 @@
 import { RepoActivity } from "@/app/types";
 import { GithubStatsComponent } from "@/components/activity/statistics-component";
-import { CircleAlert, CircleCheck, Clock, GitCommit, GitPullRequest, MessageCircle, Users } from "lucide-react";
+import { CheckCheck, CircleAlert, CircleCheck, Clock, GitCommit, GitPullRequest, MessageCircle, Users } from "lucide-react";
 
 // helper function to format time
 const formatTime = (seconds: number): string => {
@@ -8,7 +8,9 @@ const formatTime = (seconds: number): string => {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
 
-    if (days > 0) {
+    if (days == 1) {
+        return `${days} day`;
+    } else if (days > 0) {
         return `${days} days`;
     } else if (hours > 0) {
         return `${hours} hours`;
@@ -25,54 +27,54 @@ export function ActivityCard({ stats }: { stats: RepoActivity }) {
                 <GithubStatsComponent
                     title="Total Issues"
                     value={stats.totalIssues.toLocaleString()}
-                    icon={<CircleAlert className="w-5 h-5 text-white" />}
-                    color="bg-purple-600"
+                    icon={CircleAlert}
+                    iconClassName="text-indigo-500"
                 />
                 <GithubStatsComponent
                     title="Open Issues"
                     value={stats.openIssues.toLocaleString()}
-                    icon={<CircleAlert className="w-5 h-5 text-white" />}
-                    color="bg-destructive"
+                    icon={CircleAlert}
+                    iconClassName="text-red-500"
                 />
                 <GithubStatsComponent
                     title="Closed Issues"
                     value={stats.closedIssues.toLocaleString()}
-                    icon={<CircleCheck className="w-5 h-5 text-white" />}
-                    color="bg-green-600"
-                />
+                    icon={CircleCheck}
+                    iconClassName="text-green-500"
+                    />
                 <GithubStatsComponent
                     title="Avg. Issue Close Time"
                     value={formatTime(stats.issueResponseTimeClosed)}
-                    icon={<Clock className="w-5 h-5 text-white" />}
-                    color="bg-blue-600"
-                    message="Calculated from the most recent ~10 issues, measuring the average time issues remain active from creation to either last update or closure."
+                    icon={Clock}
+                    iconClassName="text-blue-500"
+                    description="Calculated from the most recent ~10 issues, measuring the average time issues remain active from creation to either last update or closure."
                 />
                 <GithubStatsComponent
                     title="Avg. PR Merge Time"
                     value={formatTime(stats.prMergeTime)}
-                    icon={<GitPullRequest className="w-5 h-5 text-white" />}
-                    color="bg-orange-600"
-                    message="Based on the most recent ~10 pull requests, tracking the average time taken from creation to successful merge."
+                    icon={GitPullRequest}
+                    iconClassName="text-orange-500"
+                    description="Based on the most recent ~10 pull requests, tracking the average time taken from creation to successful merge."
                 />
                 <GithubStatsComponent
                     title="Contributors"
                     value={stats.contributors.toLocaleString()}
-                    icon={<Users className="w-5 h-5 text-white" />}
-                    color="bg-indigo-600"
+                    icon={Users}
+                    iconClassName="text-indigo-500"
                 />
                 <GithubStatsComponent
                     title="Issue Resolution Rate"
                     value={stats.issueResolutionRate.toFixed(2) + "%"}
-                    icon={<Users className="w-5 h-5 text-white" />}
-                    color="bg-indigo-600"
-                    message="The percentage of issues that are closed."
+                    icon={CheckCheck}
+                    iconClassName="text-indigo-500"
+                    description="The percentage of issues that are closed."
                 />
                 <GithubStatsComponent
                     title="Commit Interval"
                     value={formatTime(stats.commitInterval)}
-                    icon={<GitCommit className="w-5 h-5 text-white" />}
-                    color="bg-indigo-600"
-                    message="The average time between commits."
+                    icon={GitCommit}
+                    iconClassName="text-indigo-500"
+                    description="The average time between commits."
                 />
             </div>
         </div>

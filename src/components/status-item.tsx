@@ -10,9 +10,9 @@ export function StatusItem({ label, present, weight }: StatusItemProps) {
     return (
         <div className="flex items-center space-x-2 p-2 bg-muted rounded-md">
             {present ? (
-                <Check className="text-green-500 flex-shrink-0" />
+                <Check className="text-green-500 flex-shrink-0 h-4 w-4" />
             ) : (
-                <X className="text-red-500 flex-shrink-0" />
+                <X className="text-red-500 flex-shrink-0 h-4 w-4" />
             )}
             <span className="flex-grow">{label}</span>
             {weight !== undefined && (
