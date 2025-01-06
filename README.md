@@ -21,7 +21,7 @@ GitSift is a GitHub repository evaluation tool that helps developers identify wh
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/git-sift.git
+git clone https://github.com/drxc00/gitsift.git
 cd git-sift
 ```
 2. Install dependencies:
