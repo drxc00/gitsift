@@ -8,22 +8,35 @@ import { SiftedData, RepositoryData, RepoCommunityHealth, RepoStandard, RepoFile
 import { unstable_cache as cache } from "next/cache"; // NOTE: This may be "unstable"
 
 const getRepoData = cache(async (gitUser: string, gitRepo: string) => {
-    const repoDataQuery: SiftedData = await analyzeRepository(gitUser, gitRepo) as SiftedData;
-    return repoDataQuery;
+    try {
+        const repoDataQuery: SiftedData = await analyzeRepository(gitUser, gitRepo) as SiftedData;
+        // Only cache successful responses
+        if (repoDataQuery.status === "error") {
+            throw new Error(repoDataQuery.error || "Repository not found");
+        }
+        return repoDataQuery as SiftedData;
+    } catch (error) {
+        // Don't cache errors, return them directly
+        return {
+            repo: null,
+            error: error instanceof Error ? error.message : "Failed to fetch repository data",
+            status: "error",
+        } as SiftedData;
+    }
 }, ['repoData'], { revalidate: 60 * 60 * 1000 }); // Cache for 1 hour
-
 
 export default async function RepoPage({ params }: { params: Promise<{ gitUser: string, gitRepo: string }> }) {
     const { gitUser, gitRepo } = await params;
     // Call server action
     const repoDataQuery: SiftedData = await getRepoData(gitUser, gitRepo) as SiftedData;
-    // If no data is found, return an error
-    if (!repoDataQuery) {
+    
+    // If the repo data query is an error, return an error message
+    if (repoDataQuery.status === "error") {
         return (
             <div className="flex flex-col justify-center items-center gap-6 max-w-screen-xl mx-auto mt-10 mb-10">
                 <div className="flex flex-col gap-2">
                     <p className="text-center text-2xl font-semibold">Error: No data found</p>
-                    <p className="text-center text-lg">Repository not found or not public.</p>
+                    <p className="text-center text-lg">{repoDataQuery.error}</p>
                 </div>
             </div>
         );
