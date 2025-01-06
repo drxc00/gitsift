@@ -1,7 +1,8 @@
 export type SiftedData = {
-    repo: RepositoryData;
-    tree?: ParsedTree;
+    repo: RepositoryData | null;
     metrics: Metrics;
+    error?: string;
+    status?: "success" | "error";
 }
 
 export type StandardScoring = {
