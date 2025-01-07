@@ -1,90 +1,100 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { StatusItem } from "@/components/status-item";
-import { CheckCircleIcon, FileWarning } from "lucide-react";
+import { CheckCircleIcon, FileIcon, CircleAlert, KeyRound, Settings, Lock } from "lucide-react";
 import { RepoFiles } from "@/app/types";
+import { useState } from "react";
+import { Progress } from "../ui/progress";
 
 export default function FileEvaluation({ data }: { data: RepoFiles }) {
-    const { forbiddenFiles, details } = data
+    const { forbiddenFiles, details, fileScore } = data
+
+    // Handle which files to show
+    const [showFiles, setShowFiles] = useState<string | null>("Environment Files");
 
     const fileCategories = {
         "Environment Files": [".env", ".env.local", ".env.development", ".env.production", ".env.backup"],
         "SSH Keys": ["id_rsa", "id_rsa.pub"],
         "Authentication Files": [".htpasswd", "auth.json", "credentials.json", "secret.key"],
-        "Configuration Files": ["config.php", "wp-config.php", "database.yml", "settings.py", "configuration.php"],
-        "Database Files": [".sqlite", ".sqlite3", ".mdb", "dump.sql", "database.sql"],
-        "Log Files": [".log", "error.log", "debug.log", "npm-debug.log"],
-        "System Files": [".DS_Store", "Thumbs.db"],
-        "Cache Files": [".sass-cache"],
-        "IDE Files": [".idea/", ".vscode/"],
-        "Dependency Files": ["yarn.lock", "package-lock.json", "node_modules/"],
-        "Build Files": ["dist/", "build/"],
-        "AWS Files": ["aws.config", "credentials.csv", ".aws/credentials"],
-        "Certificate Files": [".pfx", ".crt", ".cer", ".pem", ".p12"],
-        "Backup Files": [".bak", ".swp", "~", ".old"]
+        "Configuration Files": ["wp-config.php", "settings.py"]
+    }
+
+    const fileIcons = {
+        "Environment Files": <Settings className="w-4 h-4 text-muted-foreground" />,
+        "SSH Keys": <KeyRound className="w-4 h-4 text-muted-foreground" />,
+        "Authentication Files": <Lock className="w-4 h-4 text-muted-foreground" />,
+        "Configuration Files": <Settings className="w-4 h-4 text-muted-foreground" />
     }
 
     return (
         <div className="">
             <Card className="shadow-none rounded-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl font-semibold">File Evaluation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full items-start">
-                        {/* Left Section */}
-                        <div className="flex flex-col h-full justify-between">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-semibold">Quick Overview</h3>
+                    <CardTitle className="text-2xl font-semibold">
+                        <div className="flex items-center justify-between">
+                            <span>Overall File Evaluation</span>
+                            <div className="flex items-center gap-2 text">
                                 {details.criticalFiles.length > 0 ? (
-                                    <div className="flex items-center gap-2 text-yellow-500">
-                                        <FileWarning className="w-4 h-4 " />
-                                        <span>Critical Files Found</span>
-                                    </div>
+                                    <>
+                                        <Badge variant="outline" className="flex items-center gap-2 border-yellow-500 h-full">
+                                            <CircleAlert className="w-3 h-3 text-yellow-500" />
+                                            <span className="text-yellow-500 text-md hidden md:block">Critical Files Found</span></Badge>
+                                    </>
                                 ) : (
-                                    <div className="flex items-center gap-2 text-green-500">
-                                        <CheckCircleIcon className="w-4 h-4 " />
-                                        <span>No Critical Files Found</span>
-                                    </div>
+                                    <>
+                                        <Badge variant="outline" className="flex items-center gap-2 border-green-500 h-full">
+                                            <CheckCircleIcon className="w-3 h-3 text-green-500" />
+                                            <span className="text-green-500 text-md hidden md:block">No Critical Files Found</span></Badge>
+                                    </>
                                 )}
                             </div>
-                            <div className="space-y-4">
-                                <ScrollArea className="h-[200px] p-4 border border-border rounded-md">
-                                    <div className="flex flex-col gap-2">
-                                        {Object.entries(fileCategories).map(([category, files]) => {
-                                            const hasCriticalFiles = files.some(file =>
-                                                details.criticalFiles.includes(file)
-                                            );
-                                            return (
-                                                <StatusItem
-                                                    key={category}
-                                                    label={category}
-                                                    present={!hasCriticalFiles}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-                                </ScrollArea>
+                        </div>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-col gap-4">
+                        <p className="text-sm text-muted-foreground">Overall File Score: {Math.round(fileScore)}%</p>
+                        <Progress value={fileScore} className="w-full h-2 mb-4" indicatorColor={fileScore > 50 ? "bg-green-500" : "bg-yellow-500"} />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full">
+                        <div className="flex flex-col h-full py-4">
+                            <div className="space-y-2 h-full">
+                                <div className="flex flex-col gap-2 h-full">
+                                    {Object.entries(fileCategories).map(([category, files]) => {
+                                        const hasCriticalFiles = files.some(file =>
+                                            details.criticalFiles.includes(file)
+                                        );
+                                        return (
+                                            <StatusItem
+                                                key={category}
+                                                label={category}
+                                                present={!hasCriticalFiles}
+                                                className="cursor-pointer text-sm md:text-base"
+                                                onClick={() => setShowFiles(category)}
+                                                icon={fileIcons[category as keyof typeof fileIcons]}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </div>
-
-                        {/* Right Section */}
-                        <ScrollArea className="h-fit max-h-60 p-4 border rounded-md flex flex-col">
-                            <div className="space-y-4">
-                                {Object.entries(fileCategories).map(([category, files]) => (
-                                    <div key={category}>
-                                        <h4 className="font-semibold mb-2">{category}</h4>
-                                        <div className="grid gap-2">
-                                            {files.map((file) => {
-                                                const isCritical = details.criticalFiles.includes(file);
-                                                return (
-                                                    <StatusItem key={file} label={file} present={!isCritical} />
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ))}
+                        <ScrollArea className="h-[200px] p-2 border rounded-md flex flex-col">
+                            <div className="space-y-2">
+                                {fileCategories[showFiles as keyof typeof fileCategories].map((file) => {
+                                    const isCritical = details.criticalFiles.includes(file);
+                                    return (
+                                        <StatusItem
+                                            key={file}
+                                            label={file}
+                                            present={!isCritical}
+                                            icon={<FileIcon className="w-4 h-4 text-muted-foreground" />}
+                                            className="text-sm md:text-base"
+                                        />
+                                    );
+                                })}
                             </div>
                         </ScrollArea>
                     </div>

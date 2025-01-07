@@ -47,15 +47,14 @@ export function RepositoryInformation({ data }: RepositoryInformationProps) {
     const [owner, repoName] = repo.nameWithOwner.split('/');
 
     return (
-        <Card className="shadow-none rounded-md">
-            <CardContent className="p-6">
+        <Card className="shadow-none rounded-md border-none">
+            <CardContent className="p-0">
                 <div className="flex flex-col gap-4">
-                    {/* Header Section */}
-                    <div className="flex items-start justify-between">
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-0 items-start justify-between">
                         <div>
                             <h1 className="text-2xl font-bold flex items-center gap-2">
                                 <Link href={`https://github.com/${owner}/${repoName}`} target="_blank" className="hover:underline">
-                                    {owner}/{repoName}
+                                    {owner}/<span className="text-green-500">{repoName}</span>
                                 </Link>
                                 {repo.isFork && (
                                     <Badge variant="outline" className="font-normal">
@@ -70,7 +69,7 @@ export function RepositoryInformation({ data }: RepositoryInformationProps) {
                             )}
                         </div>
                         <div className="flex flex-col gap-4">
-                            <div className="flex items-center justify-end gap-4">
+                            <div className="flex items-center md:justify-end gap-4">
                                 <Badge variant="secondary" className="gap-2">
                                     <GitFork className="h-4 w-4" />
                                     {repo.forkCount.toLocaleString()}
@@ -95,11 +94,9 @@ export function RepositoryInformation({ data }: RepositoryInformationProps) {
                             </div>
                         </div>
                     </div>
-
-                    <Separator />
-                    <div className="flex justify-between">
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-0 justify-between items-start">
                         {repo.languages.nodes.length > 0 && (
-                            <div className="flex gap-2 flex-wrap w-[40%] justify-start">
+                            <div className="flex gap-2 flex-wrap md:w-[40%] justify-start">
                                 {repo.languages.nodes.slice(0, 10).map((lang) => (
                                     <LanguageBadge key={lang.name} lang={lang} />
                                 ))}
@@ -123,7 +120,7 @@ export function RepositoryInformation({ data }: RepositoryInformationProps) {
                         )}
 
                         {repo.repositoryTopics?.nodes && repo.repositoryTopics.nodes.length > 0 && (
-                            <div className="flex gap-2 flex-wrap w-[40%] justify-end">
+                            <div className="flex gap-2 flex-wrap md:w-[40%] md:justify-end">
                                 {repo.repositoryTopics.nodes.slice(0, 10).map((topic) => (
                                     <Badge variant="outline" className="text-muted-foreground" key={topic.topic.name}>
                                         {topic.topic.name}

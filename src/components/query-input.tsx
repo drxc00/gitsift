@@ -43,30 +43,28 @@ export function QueryInput() {
             setLoading(false);
             return;
         }
-
         // Extract the owner and repo name from the matched groups
         const [, , owner, repo] = match;
-
         // Redirect to the repo page or do something with the extracted data
         router.push(`/${owner}/${repo}`);
     }
 
     return (
-        <div className="flex flex-col gap-4 mt-10">
+        <div className="flex flex-col gap-4 mt-6 px-4 md:px-0 lg:px-0">
             <div className="flex flex-col gap-4 items-center max-w-2xl mx-auto w-full">
-                <div className="flex w-full gap-2">
+                <div className="flex flex-col md:flex-row w-full gap-2">
                     <Input
                         type="url"
                         placeholder="https://github.com/..."
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        className="h-12"
+                        className="h-12 bg-background shadow-none font-semibold"
                         height={48}
                     />
-                    <Button className="px-8 h-12" onClick={onClick}>
+                    <Button className="px-8 h-12 font-bold bg-green-500 hover:bg-green-600" onClick={onClick}>
                         <span>
                             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
-                                <div className="flex items-center justify-center gap-2">
+                                <div className="flex items-center justify-center gap-2 text-md">
                                     <FolderSearch />
                                     <span>Sift</span>
                                 </div>
@@ -87,6 +85,9 @@ export function QueryInput() {
                     </Button>
                 ))}
             </div>
+            <p className="text-xs text-muted-foreground text-center">
+                You can also replace the "hub" in the GitHub URL with "sift" to use the tool.
+            </p>
         </div>
     )
 }

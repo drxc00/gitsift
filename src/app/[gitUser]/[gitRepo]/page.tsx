@@ -7,6 +7,7 @@ import { InsightsCard } from "@/components/insights-card";
 import { SiftedData, RepositoryData, RepoActivity, RepoStandard, RepoFiles } from "@/app/types";
 import { unstable_cache as cache } from "next/cache";
 import { ErrorDisplay } from "@/components/error";
+import { Separator } from "@/components/ui/separator";
 
 const getRepoData = cache(async (gitUser: string, gitRepo: string) => {
     try {
@@ -37,11 +38,14 @@ export default async function RepoPage({ params }: { params: Promise<{ gitUser: 
     }
 
     return (
-        <div className="flex flex-col gap-6 max-w-screen-xl mx-auto mb-10 pt-24">
+        <div className="flex flex-col gap-6 max-w-screen-xl min-h-screen mx-auto mb-10 pt-24 px-4">
             <RepositoryInformation data={repoDataQuery?.repo as RepositoryData} />
-            <ActivityCard stats={repoDataQuery?.metrics.repoActivity as RepoActivity} />
-            <StandardEvaluation repoStandard={repoDataQuery?.metrics.repoStandard as RepoStandard} />
-            <FileEvaluation data={repoDataQuery?.metrics.repoFiles as RepoFiles} />
+            <Separator />
+            <div className="flex flex-col gap-6">
+                <ActivityCard stats={repoDataQuery?.metrics.repoActivity as RepoActivity} />
+                <StandardEvaluation repoStandard={repoDataQuery?.metrics.repoStandard as RepoStandard} />
+                <FileEvaluation data={repoDataQuery?.metrics.repoFiles as RepoFiles} />
+            </div>
             <InsightsCard insights={[
                 ...(repoDataQuery?.metrics.repoStandard.details.insights || []),
                 ...(repoDataQuery?.metrics.repoFiles.details.insights || [])

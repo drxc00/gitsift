@@ -7,73 +7,27 @@ export class FileEvaluator {
         weight: number;
         isCritical: boolean;
     }> = [
-            // Authentication and Keys
-            { name: '.env', weight: 30, isCritical: true },
-            { name: '.env.local', weight: 30, isCritical: true },
-            { name: '.env.development', weight: 25, isCritical: true },
-            { name: '.env.production', weight: 30, isCritical: true },
-            { name: '.env.backup', weight: 30, isCritical: true },
-            { name: 'id_rsa', weight: 30, isCritical: true },
-            { name: 'id_rsa.pub', weight: 20, isCritical: true },
-            { name: '.htpasswd', weight: 25, isCritical: true },
-            { name: 'auth.json', weight: 25, isCritical: true },
-            { name: 'credentials.json', weight: 25, isCritical: true },
-            { name: 'secret.key', weight: 25, isCritical: true },
+        // Environment Files
+        { name: '.env', weight: 30, isCritical: true },
+        { name: '.env.local', weight: 30, isCritical: true },
+        { name: '.env.development', weight: 25, isCritical: true },
+        { name: '.env.production', weight: 30, isCritical: true },
+        { name: '.env.backup', weight: 30, isCritical: true },
 
-            // Configuration Files with Sensitive Data
-            { name: 'config.php', weight: 20, isCritical: true },
-            { name: 'wp-config.php', weight: 25, isCritical: true },
-            { name: 'database.yml', weight: 20, isCritical: true },
-            { name: 'settings.py', weight: 15, isCritical: true },
-            { name: 'configuration.php', weight: 15, isCritical: true },
+        // SSH Keys
+        { name: 'id_rsa', weight: 30, isCritical: true },
+        { name: 'id_rsa.pub', weight: 20, isCritical: true },
 
-            // Database Files
-            { name: '.sqlite', weight: 20, isCritical: true },
-            { name: '.sqlite3', weight: 20, isCritical: true },
-            { name: '.mdb', weight: 20, isCritical: true },
-            { name: 'dump.sql', weight: 20, isCritical: true },
-            { name: 'database.sql', weight: 20, isCritical: true },
+        // Authentication Files
+        { name: '.htpasswd', weight: 25, isCritical: true },
+        { name: 'auth.json', weight: 25, isCritical: true },
+        { name: 'credentials.json', weight: 25, isCritical: true },
+        { name: 'secret.key', weight: 25, isCritical: true },
 
-            // Log Files
-            { name: '.log', weight: 15, isCritical: false },
-            { name: 'error.log', weight: 15, isCritical: false },
-            { name: 'debug.log', weight: 15, isCritical: false },
-            { name: 'npm-debug.log', weight: 10, isCritical: false },
-
-            // Cache and Temporary Files
-            { name: '.DS_Store', weight: 5, isCritical: false },
-            { name: 'Thumbs.db', weight: 5, isCritical: false },
-            { name: '.sass-cache', weight: 5, isCritical: false },
-            { name: '.idea/', weight: 5, isCritical: false },
-            { name: '.vscode/', weight: 5, isCritical: false },
-
-            // Package Lock Files (depends on project)
-            { name: 'yarn.lock', weight: 10, isCritical: false },
-            { name: 'package-lock.json', weight: 10, isCritical: false },
-
-            // Build and Distribution
-            { name: 'dist/', weight: 10, isCritical: false },
-            { name: 'build/', weight: 10, isCritical: false },
-            { name: 'node_modules/', weight: 15, isCritical: false },
-
-            // AWS Specific
-            { name: 'aws.config', weight: 25, isCritical: true },
-            { name: 'credentials.csv', weight: 25, isCritical: true },
-            { name: '.aws/credentials', weight: 25, isCritical: true },
-
-            // Certificate Files
-            { name: '.pfx', weight: 20, isCritical: true },
-            { name: '.crt', weight: 20, isCritical: true },
-            { name: '.cer', weight: 20, isCritical: true },
-            { name: '.pem', weight: 20, isCritical: true },
-            { name: '.p12', weight: 20, isCritical: true },
-
-            // Backup Files
-            { name: '.bak', weight: 15, isCritical: false },
-            { name: '.swp', weight: 10, isCritical: false },
-            { name: '~', weight: 10, isCritical: false },
-            { name: '.old', weight: 10, isCritical: false }
-        ];
+        // Configuration Files
+        { name: 'wp-config.php', weight: 25, isCritical: true },
+        { name: 'settings.py', weight: 15, isCritical: true }
+    ];
     private repoFiles: {
         fileScore: number;
         forbiddenFiles: Record<string, boolean>;
