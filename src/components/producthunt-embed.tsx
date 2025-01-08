@@ -2,6 +2,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import Image from "next/image";
 
 export function ProductHuntEmbed() {
     const { theme, systemTheme } = useTheme();
@@ -25,7 +26,7 @@ export function ProductHuntEmbed() {
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <img
+                    <Image
                         src={`https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=872566&theme=light`}
                         alt="Gitsift - Evaluate your repository seamlessly."
                         width="250"
@@ -39,7 +40,7 @@ export function ProductHuntEmbed() {
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    <img
+                    <Image
                         src={`https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=872566&theme=dark`}
                         alt="Gitsift - Evaluate your repository seamlessly."
                         width="250"

@@ -68,7 +68,7 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                         <div className="flex flex-col h-full">
                             <div className="h-full">
                                 <div className="flex flex-col gap-2 justify-between h-full">
-                                    {Object.entries(fileCategories).map(([category, files]) => {
+                                    {Object.entries(fileCategories).map(([category,]) => {
                                         const criticalCount = groupedCriticalFiles[category]?.length || 0;
                                         return (
                                             <StatusItem
