@@ -34,7 +34,11 @@ export default async function RepoPage({ params }: { params: Promise<{ gitUser: 
 
     // If the repo data query is an error, return an error message
     if (repoDataQuery.status === "error") {
-        return <ErrorDisplay message={repoDataQuery.error as string} header="An Error Occurred" />
+        return (
+            <div className="flex flex-col gap-6 max-w-screen-xl mx-auto mb-10 pt-24 px-4">
+                <ErrorDisplay message={repoDataQuery.error as string} header="An Error Occurred" />
+            </div>
+        )
     }
 
     return (
