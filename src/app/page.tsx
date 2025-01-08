@@ -1,5 +1,5 @@
 import { QueryInput } from "@/components/query-input";
-
+import { ProductHuntEmbed } from "@/components/producthunt-embed";
 
 export default function Home() {
   return (
@@ -14,6 +14,9 @@ export default function Home() {
         </p>
       </div>
       <QueryInput />
+      <div className="flex justify-center mt-10">
+        <ProductHuntEmbed />
+      </div>
     </div>
   );
 }
