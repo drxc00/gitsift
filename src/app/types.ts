@@ -32,7 +32,6 @@ export type RepoStandard = {
 }
 
 export type RepoFiles = {
-    fileScore: number;
     forbiddenFiles: Record<string, boolean>;
     details: {
         criticalFiles: string[];
