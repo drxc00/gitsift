@@ -9,7 +9,6 @@ export class FileEvaluator {
     }> = [
             // Environment Files
             { pattern: /\.env(\.|$)/, weight: 30, isCritical: true },
-            { pattern: /\.env\.(local|development|production|backup)$/, weight: 30, isCritical: true },
 
             // SSH Keys
             { pattern: /id_rsa$/, weight: 30, isCritical: true },
@@ -28,8 +27,8 @@ export class FileEvaluator {
     private repoFiles: {
         forbiddenFiles: Record<string, boolean>;
         details: {
-            criticalFiles: string[];
-            insights: string[];
+            criticalFiles: string[]; // Array of critical files found
+            insights: string[]; // Array of insights
         };
     };
 

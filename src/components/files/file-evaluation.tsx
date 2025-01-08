@@ -15,18 +15,28 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
     const [showFiles, setShowFiles] = useState<string | null>("Environment Files");
 
     const fileCategories = {
-        "Environment Files": [".env", ".env.local", ".env.development", ".env.production", ".env.backup"],
-        "SSH Keys": ["id_rsa", "id_rsa.pub"],
-        "Authentication Files": [".htpasswd", "auth.json", "credentials.json", "secret.key"],
-        "Configuration Files": ["wp-config.php", "settings.py"]
+        // Regex patterns
+        "Environment Files": /\.env(\.|$)/,
+        "SSH Keys": /^id_rsa(\.pub)?$/,
+        "Authentication Files": /^(\.htpasswd|auth\.json|credentials\.json|secret\.key)$/,
+        "Configuration Files": /^(wp-config\.php|settings\.py)$/
     }
 
     const fileIcons = {
-        "Environment Files": <Settings className="w-4 h-4 text-muted-foreground" />,
-        "SSH Keys": <KeyRound className="w-4 h-4 text-muted-foreground" />,
-        "Authentication Files": <Lock className="w-4 h-4 text-muted-foreground" />,
-        "Configuration Files": <Settings className="w-4 h-4 text-muted-foreground" />
+        "Environment Files": <Settings className="w-4 h-4" />,
+        "SSH Keys": <KeyRound className="w-4 h-4" />,
+        "Authentication Files": <Lock className="w-4 h-4" />,
+        "Configuration Files": <Settings className="w-4 h-4" />
     }
+
+    // Group critical files by category
+    const groupedCriticalFiles = Object.entries(fileCategories).reduce((acc, [category, pattern]) => {
+        const criticalInCategory = details.criticalFiles.filter(file => pattern.test(file));
+        if (criticalInCategory.length > 0) {
+            acc[category] = criticalInCategory;
+        }
+        return acc;
+    }, {} as Record<string, string[]>);
 
     return (
         <div className="">
@@ -36,18 +46,18 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                         <div className="flex items-center justify-between">
                             <span>Overall File Evaluation</span>
                             <div className="flex items-center gap-2 text">
-                                {details.criticalFiles.length > 0 ? (
-                                    <>
-                                        <Badge variant="outline" className="flex items-center gap-2 border-yellow-500 h-full">
-                                            <CircleAlert className="w-3 h-3 text-yellow-500" />
-                                            <span className="text-yellow-500 text-md hidden md:block">Critical Files Found</span></Badge>
-                                    </>
+                                {Object.keys(groupedCriticalFiles).length > 0 ? (
+                                    <Badge variant="outline" className="flex items-center gap-2 border-yellow-500 h-full">
+                                        <CircleAlert className="w-3 h-3 text-yellow-500" />
+                                        <span className="text-yellow-500 text-md hidden md:block">
+                                            {Object.values(groupedCriticalFiles).flat().length} Critical Files Found
+                                        </span>
+                                    </Badge>
                                 ) : (
-                                    <>
-                                        <Badge variant="outline" className="flex items-center gap-2 border-green-500 h-full">
-                                            <CheckCircleIcon className="w-3 h-3 text-green-500" />
-                                            <span className="text-green-500 text-md hidden md:block">No Critical Files Found</span></Badge>
-                                    </>
+                                    <Badge variant="outline" className="flex items-center gap-2 border-green-500 h-full">
+                                        <CheckCircleIcon className="w-3 h-3 text-green-500" />
+                                        <span className="text-green-500 text-md hidden md:block">No Critical Files Found</span>
+                                    </Badge>
                                 )}
                             </div>
                         </div>
@@ -59,17 +69,16 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                             <div className="h-full">
                                 <div className="flex flex-col gap-2 justify-between h-full">
                                     {Object.entries(fileCategories).map(([category, files]) => {
-                                        const hasCriticalFiles = files.some(file =>
-                                            details.criticalFiles.includes(file)
-                                        );
+                                        const criticalCount = groupedCriticalFiles[category]?.length || 0;
                                         return (
                                             <StatusItem
                                                 key={category}
-                                                label={category}
-                                                present={!hasCriticalFiles}
+                                                label={`${category} ${criticalCount > 0 ? `(${criticalCount})` : ''}`}
+                                                present={criticalCount === 0}
                                                 className="cursor-pointer p-2 text-sm md:text-base border bg-background hover:bg-muted-foreground/10 transition-colors"
                                                 onClick={() => setShowFiles(category)}
                                                 icon={fileIcons[category as keyof typeof fileIcons]}
+                                                isSelected={showFiles === category}
                                             />
                                         );
                                     })}
@@ -78,18 +87,24 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                         </div>
                         <ScrollArea className="h-[200px] p-2 border rounded-md flex flex-col">
                             <div className="space-y-2">
-                                {fileCategories[showFiles as keyof typeof fileCategories].map((file) => {
-                                    const isCritical = details.criticalFiles.includes(file);
-                                    return (
-                                        <StatusItem
-                                            key={file}
-                                            label={file}
-                                            present={!isCritical}
-                                            icon={<FileIcon className="w-4 h-4 text-muted-foreground" />}
-                                            className="text-sm md:text-base"
-                                        />
-                                    );
-                                })}
+                                {groupedCriticalFiles[showFiles as keyof typeof groupedCriticalFiles]?.length > 0 ? (
+                                    groupedCriticalFiles[showFiles as keyof typeof groupedCriticalFiles].map((file) => {
+                                        const isCritical = details.criticalFiles.includes(file);
+                                        return (
+                                            <StatusItem
+                                                key={file}
+                                                label={file}
+                                                present={!isCritical}
+                                                icon={<FileIcon className="w-4 h-4 text-muted-foreground" />}
+                                                className={`text-sm md:text-base ${isCritical ? 'text-red-500' : ''}`}
+                                            />
+                                        );
+                                    })
+                                ) : (
+                                    <div className="text-muted-foreground text-sm">
+                                        No files found in this category
+                                    </div>
+                                )}
                             </div>
                         </ScrollArea>
                     </div>
