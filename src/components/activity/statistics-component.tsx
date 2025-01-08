@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { HelpCircle } from 'lucide-react'
-import { TypeIcon as type, LucideIcon } from 'lucide-react'
+import { LucideIcon } from 'lucide-react'
 
 interface GithubStatsComponentProps {
     title: string

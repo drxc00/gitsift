@@ -86,7 +86,7 @@ export function QueryInput() {
                 ))}
             </div>
             <p className="text-xs text-muted-foreground text-center">
-                You can also replace the "hub" in the GitHub URL with "sift" to use the tool.
+                You can also replace the &quot;hub&quot; in the GitHub URL with &quot;sift&quot; to use the tool.
             </p>
         </div>
     )

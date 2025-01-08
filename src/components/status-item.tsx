@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Check, CheckCircle, OctagonAlert, SquareCheckBig, X } from 'lucide-react'
+import { OctagonAlert, SquareCheckBig } from 'lucide-react'
 
 interface StatusItemProps {
     label: string;

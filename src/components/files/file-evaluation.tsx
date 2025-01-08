@@ -7,10 +7,9 @@ import { StatusItem } from "@/components/status-item";
 import { CheckCircleIcon, FileIcon, CircleAlert, KeyRound, Settings, Lock } from "lucide-react";
 import { RepoFiles } from "@/app/types";
 import { useState } from "react";
-import { Progress } from "../ui/progress";
 
 export default function FileEvaluation({ data }: { data: RepoFiles }) {
-    const { forbiddenFiles, details, fileScore } = data
+    const { details } = data
 
     // Handle which files to show
     const [showFiles, setShowFiles] = useState<string | null>("Environment Files");
@@ -55,14 +54,10 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex flex-col gap-4">
-                        <p className="text-sm text-muted-foreground">Overall File Score: {Math.round(fileScore)}%</p>
-                        <Progress value={fileScore} className="w-full h-2 mb-4" indicatorColor={fileScore > 50 ? "bg-green-500" : "bg-yellow-500"} />
-                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full">
-                        <div className="flex flex-col h-full py-4">
-                            <div className="space-y-2 h-full">
-                                <div className="flex flex-col gap-2 h-full">
+                        <div className="flex flex-col h-full">
+                            <div className="h-full">
+                                <div className="flex flex-col gap-2 justify-between h-full">
                                     {Object.entries(fileCategories).map(([category, files]) => {
                                         const hasCriticalFiles = files.some(file =>
                                             details.criticalFiles.includes(file)
@@ -72,7 +67,7 @@ export default function FileEvaluation({ data }: { data: RepoFiles }) {
                                                 key={category}
                                                 label={category}
                                                 present={!hasCriticalFiles}
-                                                className="cursor-pointer text-sm md:text-base"
+                                                className="cursor-pointer p-2 text-sm md:text-base border bg-background hover:bg-muted-foreground/10 transition-colors"
                                                 onClick={() => setShowFiles(category)}
                                                 icon={fileIcons[category as keyof typeof fileIcons]}
                                             />

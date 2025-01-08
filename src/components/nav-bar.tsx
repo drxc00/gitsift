@@ -19,12 +19,16 @@ export function NavBar() {
                 </div>
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
-                    <Button variant="ghost" size="icon">
-                        <Coffee className="h-5 w-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon">
-                        <Github className="h-5 w-5" />
-                    </Button>
+                    <Link href="https://buymeacoffee.com/neilpatricv" target="_blank">
+                        <Button variant="ghost" size="icon">
+                            <Coffee className="h-5 w-5" />
+                        </Button>
+                    </Link>
+                    <Link href="https://github.com/drxc00/gitsift" target="_blank">
+                        <Button variant="ghost" size="icon">
+                            <Github className="h-5 w-5" />
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </header>

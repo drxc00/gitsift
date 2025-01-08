@@ -1,6 +1,6 @@
 import { RepoActivity } from "@/app/types";
 import { GithubStatsComponent } from "@/components/activity/statistics-component";
-import { CheckCheck, CircleAlert, CircleCheck, Clock, GitCommit, GitPullRequest, MessageCircle, Users } from "lucide-react";
+import { CheckCheck, CircleAlert, CircleCheck, Clock, GitCommit, GitPullRequest, Users } from "lucide-react";
 
 // helper function to format time
 const formatTime = (seconds: number): string => {

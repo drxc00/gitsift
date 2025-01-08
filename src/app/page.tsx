@@ -9,7 +9,7 @@ export default function Home() {
           <span className="text-green-500">Lighthouse</span> for Better Repos.
         </h1>
         <p className="text-sm text-muted-foreground max-w-md md:max-w-xl mx-auto md:text-lg lg:text-xl">
-          Identify what's missing and improve your Git workflow effortlessly.
+          Identify what&apos;s missing and improve your Git workflow effortlessly.
           Get detailed insights and actionable recommendations.
         </p>
       </div>

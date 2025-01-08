@@ -1,13 +1,12 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { EyeIcon, StarIcon, GitFork } from "lucide-react";
+import { EyeIcon, GitFork } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import Link from "next/link";
 import { RepositoryData } from "@/app/types";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Calendar, GitBranch, Box } from "lucide-react";
+import { Calendar, GitBranch } from "lucide-react";
 
 interface RepositoryInformationProps {
     data: RepositoryData;
@@ -107,7 +106,7 @@ export function RepositoryInformation({ data }: RepositoryInformationProps) {
                                                 +{repo.languages.nodes.length - 10} more
                                             </span>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto max-w-lg p-4">
+                                        <PopoverContent className="w-auto max-w-sm md:max-w-lg p-4">
                                             <div className="flex gap-2 flex-wrap">
                                                 {repo.languages.nodes.slice(10).map((lang) => (
                                                     <LanguageBadge key={lang.name} lang={lang} />
@@ -133,7 +132,7 @@ export function RepositoryInformation({ data }: RepositoryInformationProps) {
                                                 +{repo.repositoryTopics.nodes.length - 10} more
                                             </span>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-2 max-w-lg">
+                                        <PopoverContent className="w-auto p-2 max-w-sm md:max-w-lg">
                                             <div className="flex gap-2 flex-wrap">
                                                 {repo.repositoryTopics.nodes.slice(10).map((topic) => (
                                                     <Badge variant="outline" className="text-muted-foreground" key={topic.topic.name}>
