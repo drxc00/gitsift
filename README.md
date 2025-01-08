@@ -4,7 +4,7 @@ GitSift is a GitHub repository evaluation tool that helps developers identify wh
 
 ## Features
 
-- **Repository Health Check**: Evaluate your repository's overall health and standards compliance
+- **Repository Setup Check**: Evaluate your repository's overall setup and standards compliance
 - **Community Metrics**: Track issues, PRs, contributors, and response times
 - **File Analysis**: Identify missing or critical files in your repository
 - **Insights & Recommendations**: Get actionable insights to improve your repository
@@ -22,7 +22,7 @@ GitSift is a GitHub repository evaluation tool that helps developers identify wh
 
 ```bash
 git clone https://github.com/drxc00/gitsift.git
-cd git-sift
+cd gitsift
 ```
 2. Install dependencies:
 ```bash
@@ -49,7 +49,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, Tailwind CSS
-- **State Management**: React Query
 - **UI Components**: shadcn/ui, Radix UI
 - **Icons**: Lucide React
 - **Styling**: Tailwind CSS with custom animations
@@ -62,7 +61,7 @@ We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING
 
 If you find this project useful, please consider supporting its development:
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/git-sift)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/neilpatricv)
 
 ## License
 
