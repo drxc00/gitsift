@@ -15,9 +15,8 @@ export function ProductHuntEmbed() {
     if (currentTheme === null) {
         return (
             <Skeleton className="w-[250px] h-[54px] animate-pulse"></Skeleton>
-        ) // Loading placeholder
+        );
     }
-
     return (
         <>
             {currentTheme == "light" ? (
